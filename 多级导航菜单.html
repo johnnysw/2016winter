@@ -14,13 +14,18 @@
         a{
             text-decoration: none;
         }
-
+        #menu{
+            height: 30px;
+            /*overflow: hidden;*/
+            /*background: #ff0000;*/
+        }
         #menu .main-menu{
             width: 120px;
             height: 30px;
             float: left;
             margin-right: 5px;
             background: #cccccc;
+            position: relative;
         }
         #menu .main-menu-link{
             height: 100%;
@@ -28,6 +33,9 @@
             line-height: 30px;
         }
         #menu .sub-menu{
+            position: absolute;
+            left: 0;
+            top: 30px;
             display: none;
         }
     </style>
@@ -62,19 +70,23 @@
             </ul>
         </li>
     </ul>
+
+    <h1>hehe</h1>
+
     <script>
-        var mainMenu = document.getElementsByClassName('main-menu');
-        for(var i=0; i<mainMenu.length; i++){
-            mainMenu[i].onmouseover = function () {
-                //this=>对当前对象的引用
-                var subMenu = this.getElementsByClassName('sub-menu')[0];//[ul]
-                subMenu.style.display = 'block';
-            };
-            mainMenu[i].onmouseout = function () {
-                //this=>对当前对象的引用
-                var subMenu = this.getElementsByClassName('sub-menu')[0];//[ul]
-                subMenu.style.display = 'none';
-            };
+        var oMenu = document.getElementById('menu');
+        var aLi = oMenu.getElementsByTagName('li');
+        for(var i=0; i<aLi.length; i++){
+            if(aLi[i].className == 'main-menu'){
+                aLi[i].onmouseover = function () {
+                    var oSubMenu = this.getElementsByTagName('ul')[0];//[ul]
+                    oSubMenu.style.display = 'block';
+                };
+                aLi[i].onmouseout = function () {
+                    var oSubMenu = this.getElementsByTagName('ul')[0];//[ul]
+                    oSubMenu.style.display = 'none';
+                };
+            }
         }
     </script>
 </body>
