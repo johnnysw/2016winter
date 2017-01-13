@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+
+    /*
+    *
+    *
+    * */
+    function getRangeRandom(low, high){
+        return Math.floor(Math.random() * (high - low + 1)) + low;
+    }
+    function get3Random(){
+        var arr = [];
+        for(var i=0; i<3; i++){
+            arr.push(getRangeRandom(1, 9));
+        }
+        return arr;
+    }
+    var count = 0;
+    for(var i=0; i<10000; i++){
+        var arr = get3Random();
+        for(var j=0; j<arr.length; j++){
+            if(arr[j] == 8){
+                count++;
+            }
+        }
+    }
+    document.write(count / 10000)
+
+
+
+
+
+</script>
+</body>
+</html>
