@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>贪吃蛇-面向过程版</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		#container{
+			width: 1000px;
+			margin: 50px auto;
+			border: 1px solid #000;
+		}
+		#ground{
+			width: 1000px;
+			height: 500px;
+			background: #ccc;
+			position: relative;
+		}
+		#control{
+			height: 50px;
+			line-height: 50px;
+		}
+		#banner{
+			float: left;
+		}
+		#buttons{
+			float: right;
+		}
+		.block{
+			width: 20px;
+			height: 20px;
+			background: orange;
+			float: left;
+		}
+		.snake{
+			background: red;
+			position: absolute;
+			top: 60px;
+		}
+		.food{
+			background: green;
+			position: absolute;
+		}
+	</style>
+</head>
+<body>
+	<div id="container">
+		<div id="ground">
+
+		</div>
+		<div id="control">
+			<span id="banner">JavaScript 贪吃蛇 By 唯创网讯</span>
+			<div id="buttons">
+				<button id="btn-start">开始</button>
+				<button id="btn-pause">暂停</button>
+			</div>
+		</div>
+	</div>
+	<script>
+		//1. 初始化草场
+		var oGround = document.getElementById('ground');
+		for(var i=0; i<50*25; i++){
+			var oDiv = document.createElement('div');
+			oDiv.className = 'block';
+			oGround.appendChild(oDiv);
+		}
+
+		//2. 创建蛇
+		var snakeBody = [];
+		for(var i=0; i<3; i++){
+			var oDiv = document.createElement('div');
+			oDiv.className = 'block snake';
+			oDiv.style.left = (3-i) * 20 + 'px';
+			oGround.appendChild(oDiv);
+			snakeBody.push(oDiv);
+		}
+
+		//3. 创建食物
+		var oFood;
+		function createFood() {
+			oFood = document.createElement('div');
+			oFood.className = 'block food';
+			var iLeft = iTop = 0;
+			do{
+				var bFound = true;//一个标识位，true代表找到合适的坐标，false反之
+				iLeft = Math.floor(Math.random()*50) * 20;
+				iTop = Math.floor(Math.random()*25) * 20;
+				for(var i=0; i<snakeBody.length; i++){
+					if(snakeBody[i].offsetLeft == iLeft &&  snakeBody[i].offsetTop == iTop){
+						bFound = false;
+						break;
+					}
+				}
+			}while(!bFound);
+			oFood.style.left = iLeft + 'px';
+			oFood.style.top =  iTop + 'px';
+			oGround.appendChild(oFood);
+		}
+		createFood();
+
+
+		//4. 蛇移动
+		var direction = 'right';//蛇移动方向
+		var timer;
+
+		function moveHead(snakeHead){
+			if(direction == 'right'){
+				snakeHead.style.left = snakeHead.offsetLeft + 20 + 'px';
+			}else if(direction == 'down'){
+				snakeHead.style.top = snakeHead.offsetTop + 20 + 'px';
+			}else if(direction == 'left'){
+				snakeHead.style.left = snakeHead.offsetLeft - 20 + 'px';
+			}else if(direction == 'up'){
+				snakeHead.style.top = snakeHead.offsetTop - 20 + 'px';
+			}
+		}
+
+		function move(){
+			for(var i=0; i<snakeBody.length; i++){
+				snakeBody[i].left = snakeBody[i].offsetLeft;
+				snakeBody[i].top = snakeBody[i].offsetTop;
+			}
+
+			var snakeHead = snakeBody[0];
+			moveHead(snakeHead);
+			for(var i=1; i<snakeBody.length; i++){
+				snakeBody[i].style.left = snakeBody[i-1].left + 'px';
+				snakeBody[i].style.top = snakeBody[i-1].top + 'px';
+			}
+
+			//5. 吃食物（增长身体）
+			if(snakeHead.offsetLeft == oFood.offsetLeft && snakeHead.offsetTop == oFood.offsetTop){
+				oFood.className = 'block snake';
+				snakeBody.splice(1, 0, oFood);
+				moveHead(snakeHead);
+				createFood();
+			}
+
+			//6. 吃到自己或边界结束游戏
+		}
+
+		var oBtnStart = document.getElementById('btn-start');
+		oBtnStart.onclick = function(){
+			clearInterval(timer);
+			timer = setInterval(function(){
+				move();
+			}, 1000);
+		};
+
+		
+
+
+
+
+		document.onkeydown = function(e){
+			e = e || window.event;
+			var keyCode = e.which || e.keyCode;
+			switch(keyCode){
+				case 37: //left
+					if(direction != 'right'){
+						direction = 'left';
+						move();
+					}
+					break;
+				case 38: //up
+					if(direction != 'down'){
+						direction = 'up';
+						move();
+					}
+					break;
+				case 39: //right
+					if(direction != 'left'){
+						direction = 'right';
+						move();
+					}
+					break;
+				case 40: //down
+					if(direction != 'up'){
+						direction = 'down';
+						move();
+					}
+					break;
+			}
+		};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</script>
+</body>
+</html>
