@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <script>
+        /*
+        * 编写程序，计算10!(即 1*2*3＊·…10）的结果(10的阶乘)。
+        *
+        *
+        *
+        * 10! = 10 * 9!
+        * 9! = 9 * 8!
+        *
+        * */
+
+
+        function fn(num){
+            if(num == 1){
+                return 1;
+            }
+            return num * arguments.callee(num - 1);
+        }
+
+        function fn2(num){
+            var sum = 1;
+            for(var i=1; i<=num; i++){
+                sum *= i;
+            }
+            return sum;
+        }
+
+        document.write(fn(10) + "<br>");
+        document.write(fn2(10));
+
+    </script>
+</body>
+</html>
